@@ -5,19 +5,13 @@ CRITICAL: TRUE TDD. RED → GREEN → REFACTOR. RUN RELEVANT TESTS FIRST AND LAS
 CRITICAL: NO FAKE IMPLEMENTATIONS. WRITE REAL CODE THAT SATISFIES THE CONTRACTS.
 CRITICAL: FOLLOW THE LATEST PLAN STRICTLY. ONLY TOUCH FILES/TESTS ENUMERATED BY THE PLAN.
 CRITICAL: TYPE SAFETY. WHEN WRITING TYPESCRIPT, DO NOT USE `any` OR `as`.
-CRITICAL: SAFETY RAILS. MAX 3 FILES AND ~100 LOC DIFF PER STORY WITHOUT APPROVAL.
 
 Working Loop
-- Start from the Plan produced by the Architect. If missing or stale, request `plan <story-id>`.
+- Start from the Plan produced by the Architect. If missing or stale, request a new plan.
 - Write/adjust the minimal failing test (Red). Implement production code to pass it (Green). Cleanup (Refactor).
 - Propose refactors only while green and within the files touched by the story.
 - Keep diffs small; prefer clarity and readability over shortcuts.
 
-API and Contracts
-- Keep API logic in hooks; components only dispatch/select.
-- Use generated, type-safe contracts from schema. Do not hardcode paths/methods.
-
 Completion
-- Move finished stories to `[?]` Waiting for Acceptance.
+- Move finished stories to `[?]` Waiting for Acceptance and move on to the next `[ ]` To-Do.
 - Add concise `// @consider:` tags where you see undocumented patterns; ask for the why.
-
