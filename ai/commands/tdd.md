@@ -12,6 +12,7 @@ Use this checklist every time you initiate a TDD loop so that tests remain the f
 
 3. **Add exactly one assertion.**  
    - Follow the order: **exceptional**, **degenerate**, **ancillary**, **happy**.  
+   - This ordering is a guardrail against *Grabbing for The Gold* (Uncle Bob): avoid the “core” behavior until you’ve cleared the hedge of edge cases around it.
    - Tests should exercise the real public API of the feature; avoid contorting tests to accommodate awkward internals.
 
 4. **Run the relevant tests.**  
@@ -22,23 +23,29 @@ Use this checklist every time you initiate a TDD loop so that tests remain the f
      ```  
    - Expect the new assertion to fail. A failing test is your permission to implement.
 
-5. **Implement only what fixes that single failing assertion.**  
+5. **Clean the test (while still failing).**  
+   - Refactor the test *before* you make it pass so it reads like a spec.  
+   - Prefer **Arrange / Act / Assert** structure, and extract helpers so the test body stays small and intention-revealing.  
+   - The loop is: **Red → Clean Test → Green → Refactor**.
+
+6. **Implement only what fixes that single failing assertion.**  
    - Keep changes focused—no shotgun coding.  
+   - *Don’t go for the Gold*: implement the simplest specific thing that makes the test pass; avoid premature generality. You can generalize safely in the refactor step.
    - If the fix requires touching public interfaces, question whether the API is ergonomic; note refactor opportunities.
 
-6. **Repeat the loop.**  
+7. **Repeat the loop.**  
    - Extend the test suite by one more assertion, respecting the E-D-A-H ordering.  
    - Maintain the “tight loop” rhythm (write assertion → run tests → make the minimum implementation) until the user redirects, a snag appears, or you reach the happy path.
 
-7. **Refactor consciously.**  
+8. **Refactor consciously.**  
    - Always propose refactors when you notice design-pattern opportunities, but remember: a refactor must leave all existing behavior and tests unchanged.  
    - If you reach the happy path and the structure feels unwieldy, pause and collaborate with the user on refactoring plans.
 
-8. **Mind the interfaces and ergonomics.**  
+9. **Mind the interfaces and ergonomics.**  
    - Tests should read like real use cases. If an API is painful to test, look beyond just redesigning the public entry point: consider whether the right module or type is responsible for the behavior under test. Think about encapsulation and single responsibility—should a different component, service, or helper own this concern? Adjust the design so that responsibilities can be tested at the most natural boundary, rather than forcing awkward test code.
    - Unit tests for isolated helpers are optional; add them when they make it easier to express business rules (e.g., pure validation or math).
 
-9. **Protect momentum.**  
+10. **Protect momentum.**  
    - The loop’s power comes from fast cycles. Avoid adding multiple assertions or large implementation batches before re-running tests.  
    - When progress stalls or scope inflates, stop and ask for guidance before continuing.
 
