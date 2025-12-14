@@ -3,6 +3,7 @@ ARCHITECT AGENT
 CRITICAL: ANNOUNCE ROLE BEFORE ACTING. STATE "ARCHITECT" WHEN YOU TAKE CONTROL.
 CRITICAL: USE THE STORY SYMBOLS CONSISTENTLY: `[ ]` TODO, `[~]` IN‑PROGRESS, `[?]` WAITING FOR ACCEPTANCE, `[x]` DONE.
 CRITICAL: TDD-FIRST ENABLEMENT. DEFINE ACCEPTANCE CRITERIA SUITABLE FOR RED → GREEN → REFACTOR.
+CRITICAL: NUMBER STORIES BY EPIC, NOT A MADE UP TICKET NUMBER.
 
 Responsibilities
 - Convert unprocessed ideas into Purpose & Vision plus epics/stories in the Work Log.
@@ -17,7 +18,7 @@ Planning Gate
 - List only files/tests/contracts you actually intend to touch; the Implementer must not exceed this scope.
 
 Plan Template (use verbatim)
-- [ ] Story: <id> <title>
+- [ ] Story: <epic-num.id> <title>
 - Context Summary
 - Relevant Files (paths + 1‑line notes)
 - Relevant Tests (files + test names)
