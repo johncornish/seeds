@@ -33,10 +33,24 @@ Use this checklist every time you initiate a TDD loop so that tests remain the f
    - Prefer **Arrange / Act / Assert** structure, and extract helpers so the test body stays small and intention-revealing.  
    - The loop is: **Red → Clean Test → Green → Refactor**.
 
-7. **Implement only what fixes that single failing assertion.**  
-   - Keep changes focused—no shotgun coding.  
-   - **One assertion = One test run = One minimal fix**. Never implement for tests you haven't written yet, even if you "know" they're coming.  
-   - *Don't go for the Gold*: implement the simplest specific thing that makes the test pass; avoid premature generality. You can generalize safely in the refactor step.  
+7. **Implement only what fixes that single failing assertion.**
+   - Keep changes focused—no shotgun coding.
+   - **One assertion = One test run = One minimal fix**. Never implement for tests you haven't written yet, even if you "know" they're coming.
+   - *Don't go for the Gold*: implement the simplest specific thing that makes the test pass; avoid premature generality. You can generalize safely in the refactor step.
+   - **Apply the Transformation Priority Premise (TPP)**: choose the *lowest-priority* transformation on this list that makes the test pass. Higher transformations carry more complexity; resist the pull to jump ahead.
+     1. `({}→nil)` no code at all
+     2. `(nil→constant)`
+     3. `(constant→constant+)` a simple constant to a more complex one
+     4. `(constant→scalar)` replace a constant with a variable or argument
+     5. `(statement→statements)` add more unconditional statements
+     6. `(unconditional→if)` split the execution path
+     7. `(scalar→array)`
+     8. `(array→container)`
+     9. `(statement→tail-recursion)`
+     10. `(if→while)`
+     11. `(expression→function)` replace an expression with a function or algorithm
+     12. `(variable→assignment)` replace the value of a variable
+   - **Run the tests after every file change**, not just after writing the assertion. Never accumulate multiple file edits before verifying.
    - If the fix requires touching public interfaces, question whether the API is ergonomic; note refactor opportunities.
 
 8. **Repeat the loop.**  
@@ -46,7 +60,9 @@ Use this checklist every time you initiate a TDD loop so that tests remain the f
 
 9. **Refactor consciously.**  
    - Always propose refactors when you notice design-pattern opportunities, but remember: a refactor must leave all existing behavior and tests unchanged.  
-   - Refactor immediately when you see duplication in **production code** (Red-Green-**Refactor**). Refactoring test structure can wait until a natural pause or when tests become hard to read.  
+   - **Eliminate duplication of knowledge in production code immediately** (Red-Green-**Refactor**): when the same logic, algorithm, or business rule appears in multiple places, extract it now. This is a correctness and maintenance risk.  
+   - **Duplication of contracts in tests** (redundant assertions verifying the same behavior) can wait for a natural pause or when tests become hard to read. These are about test organization, not correctness.  
+   - **Remove subsumed tests**: When a more specific test guarantees a broader contract (e.g., "response has 2 properties" subsumes "response is not nil"), remove the broader test. Keep the most specific, valuable assertions.  
    - If you reach the happy path and the structure feels unwieldy, pause and collaborate with the user on refactoring plans.
 
 10. **Mind the interfaces and ergonomics.**  
@@ -57,4 +73,9 @@ Use this checklist every time you initiate a TDD loop so that tests remain the f
    - The loop's power comes from fast cycles. Avoid adding multiple assertions or large implementation batches before re-running tests.  
    - Keep responses focused and brief: state intention → make change → confirm result → propose next step. Don't over-explain or pre-implement.  
    - When progress stalls or scope inflates, stop and ask for guidance before continuing.
+
+12. **Commit at each passing feature increment.**
+   - Each commit is atomic: one logical behavior added, all tests green.
+   - Write the message as a **behavior**, not a mechanism: `"Required field validation rejects blank names"` not `"add validation function"`. A reader should understand what the system does from the log alone.
+   - Never commit with failing tests or half-finished logic. The git log is the story of how the feature was built—keep it readable.
 
